@@ -39,5 +39,7 @@ Provides Go language REST API for AppDynamics
 
 MIT License
 
+
 Copyright (c) 2023 David Lopes
+
 Copyright (c) 2023 Cisco Systems, Inc. and its affiliates
