@@ -1,3 +1,28 @@
+/*
+MIT License
+
+Copyright (c) 2023 David Lopes
+Copyright (c) 2023 Cisco Systems, Inc. and its affiliates
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
 package appdrest
 
 import (
@@ -114,6 +139,7 @@ type Widget struct {
 }
 
 // DataSeriesTemplate - described data series for timeseries widgets
+// Added 2023 Cisco Systems, Inc.
 type DataSeriesTemplate struct {
 	SeriesType                  *string     `json:"seriesType"`
 	MetricType                  *string     `json:"metricType"`
@@ -153,6 +179,7 @@ type DataSeriesTemplate struct {
 }
 
 // WidgetExported - single widget as in dashboard export
+// Added 2023 Cisco Systems, Inc.
 type WidgetExported struct {
 	WidgetType                  *string               `json:"widgetType"`
 	Title                       *string               `json:"title"`
@@ -215,6 +242,7 @@ type WidgetExported struct {
 }
 
 // AssociatedEntityTemplate - associated entity type in exported dashboard
+// Added 2023 Cisco Systems, Inc.
 type AssociatedEntityTemplate struct {
 	ApplicationName   *string `json:"applicationName"`
 	EntityType        *string `json:"entityType"`
@@ -226,6 +254,7 @@ type AssociatedEntityTemplate struct {
 
 // DashboardExport represents a single Dashboard within AppDynamics
 // as exported by Export function in json format
+// Added 2023 Cisco Systems, Inc.
 type DashboardExport struct {
 	Name                      *string                     `json:"name"`
 	Description               interface{}                 `json:"description"`
@@ -249,6 +278,7 @@ type DashboardExport struct {
 	Properties                []interface{}               `json:"properties"`
 }
 
+// Added 2023 Cisco Systems, Inc.
 type DashboardUploadResponse struct {
 	Success              bool          `json:"success"`
 	Errors               []interface{} `json:"errors"`
@@ -294,6 +324,7 @@ func (s *DashboardService) GetDashboard(ID int) (*Dashboard, error) {
 // }
 
 // GetDashboardListForTier - get list of dashboards for a given application tier
+// Added 2023 Cisco Systems, Inc.
 func (s *DashboardService) GetDashboardListForTier(tierID int) ([]*Dashboard, error) {
 
 	url := fmt.Sprintf("/controller/restui/templates/getAllDashboardTemplatesByTier/%d?isTierDashboard=true", tierID)
@@ -308,6 +339,7 @@ func (s *DashboardService) GetDashboardListForTier(tierID int) ([]*Dashboard, er
 }
 
 // DeleteDashboard - delete a dashboards by Id
+// Added 2023 Cisco Systems, Inc.
 func (s *DashboardService) DeleteDashboard(tierID int) error {
 
 	url := "/controller/restui/dashboards/deleteDashboards"
@@ -322,6 +354,7 @@ func (s *DashboardService) DeleteDashboard(tierID int) error {
 }
 
 // GetDashboardExport - get dashboard in export/import format
+// Added 2023 Cisco Systems, Inc.
 func (s *DashboardService) GetDashboardExport(dashboardID int) (*DashboardExport, error) {
 
 	url := fmt.Sprintf("/controller/CustomDashboardImportExportServlet?dashboardId=%d", dashboardID)
@@ -336,6 +369,7 @@ func (s *DashboardService) GetDashboardExport(dashboardID int) (*DashboardExport
 }
 
 // UploadDashboardExport - upload a new dashboard in export/import format
+// Added 2023 Cisco Systems, Inc.
 func (s *DashboardService) UploadDashboardExport(dashboard *DashboardExport) (*DashboardUploadResponse, error) {
 
 	dashboardJSON, err := json.Marshal(dashboard)

@@ -1,3 +1,28 @@
+/*
+MIT License
+
+Copyright (c) 2023 David Lopes
+Copyright (c) 2023 Cisco Systems, Inc. and its affiliates
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
 package appdrest
 
 import (
@@ -64,11 +89,14 @@ var format = logging.MustStringFormatter(
 )
 
 // NewClient Returns a Client, this is needed for any communication
+// For backward compatibility
+// Added 2023 Cisco Systems, Inc.
 func NewClient(protocol string, controllerHost string, port int, username string, password string, account string) (*Client, error) {
 	return NewClientProxy(protocol, controllerHost, port, username, password, account, false, "", 0, false)
 }
 
 // NewClientProxy Returns a Client, this is needed for any communication
+// Modified by 2023 Cisco Systems, Inc.
 func NewClientProxy(protocol string, controllerHost string, port int, username string, password string, account string,
 	useProxy bool, proxyHost string, proxyPort int, proxySecure bool) (*Client, error) {
 
@@ -140,6 +168,7 @@ func NewClientProxy(protocol string, controllerHost string, port int, username s
 	c.Node = (*NodeService)(&c.common)
 	c.TimeRange = (*TimeRangeService)(&c.common)
 	c.Configuration = (*Configuration)(&c.common)
+	// Added 2023 Cisco Systems, Inc.
 	c.Backend = (*BackendService)(&c.common)
 	c.HealthRule = (*HealthRuleService)(&c.common)
 	c.Event = (*EventService)(&c.common)
@@ -184,6 +213,7 @@ func (c *Client) RestInternal(method string, url string, model interface{}, body
 }
 
 // RestInternalHdr makes a call using the internal API that requires authorization with additional headers
+// Added 2023 Cisco Systems, Inc.
 func (c *Client) RestInternalHdr(method string, url string, model interface{}, body *bytes.Buffer, headers map[string]string) error {
 
 	req, err := c.newRequestBodyBytes(method, url, body)
@@ -238,6 +268,7 @@ func (c *Client) newRequest(method, urlStr string, body interface{}) (*http.Requ
 
 // newRequestBodyBytes performs a request with []byte passed as argument instead of object
 // The baseURL on the client will be concatenated with the url argument
+// Added 2023 Cisco Systems, Inc.
 func (c *Client) newRequestBodyBytes(method, urlStr string, body *bytes.Buffer) (*http.Request, error) {
 	rel, err := url.Parse(urlStr)
 	if err != nil {
