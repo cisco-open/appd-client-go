@@ -54,7 +54,7 @@ func (t HealthRuleDetail) String() string {
 	UseDataFromLastNMinutes: %d 
 	WaitTimeAfterViolation: %d 
 	ScheduleName: %s
-	Affects: %s
-	EvalCriterias %s
+	Affects: %v
+	EvalCriterias %v
 	`, *t.Name, *t.Enabled, *t.UseDataFromLastNMinutes, *t.WaitTimeAfterViolation, *t.ScheduleName, *t.Affects, *t.EvalCriterias)
 }
