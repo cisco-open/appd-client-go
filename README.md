@@ -1,6 +1,6 @@
-# AppDynamics REST API
+# AppDynamics Go Client
   
-Library to access the [AppDynamics REST API](https://docs.appdynamics.com/appd/23.x/latest/en/extend-appdynamics/appdynamics-apis)  
+This project provides access to the [AppDynamics REST API](https://docs.appdynamics.com/appd/23.x/latest/en/extend-appdynamics/appdynamics-apis) in Go language.
 
 ## Usage ##
 ```go
@@ -30,10 +30,21 @@ apps, err := client.Application.GetApplications()
 ```
 
 
+## Projects using this library ##
+
+* [AppDynamics Swagger Tool](https://github.com/cisco-open/swagger-appd-tool)
+
+## Support ##
+
+We welcome feedback, questions, issue reports and pull requests.
+
+Maintainer's email address: mdivis@cisco.com
+
+[GitHub Issues](https://github.com/cisco-open/appd-client-go/issues)
+
+## Acknowledgements ##
+
 Based on work of https://github.com/dlopes7/go-appdynamics-rest-api
-
-Provides Go language REST API for AppDynamics
-
 
 ## License ##
 
