@@ -1,4 +1,4 @@
-module appdrest
+module github.com/cisco-open/appd-client-go
 
 go 1.20
 
