@@ -96,6 +96,43 @@ type HealthRuleDetail struct {
 	EvalCriterias           *EvalCriteriasSet `json:"evalCriterias"`
 }
 
+// DANGER ZONE
+// this is an UNPUBLISHED API call - it may change in the future
+type HealthRuleEvaluationResponse []struct {
+	AffectedEntity          HealthRuleAffectedEntity            `json:"affectedEntity"`
+	Health                  string                              `json:"health"`
+	EvaluationStatus        string                              `json:"evaluationStatus"`
+	AggregationScopesStates []HealthRuleAggregationScopesStates `json:"aggregationScopesStates"`
+	Name                    string                              `json:"name"`
+	TierName                any                                 `json:"tierName"`
+}
+type HealthRuleAffectedEntity struct {
+	ID             int    `json:"id"`
+	Version        int    `json:"version"`
+	EntityType     string `json:"entityType"`
+	EntityID       int    `json:"entityId"`
+	PrettyToString any    `json:"prettyToString"`
+}
+type HealthRuleAggregationScope struct {
+	ID             int    `json:"id"`
+	Version        int    `json:"version"`
+	EntityType     string `json:"entityType"`
+	EntityID       int    `json:"entityId"`
+	PrettyToString any    `json:"prettyToString"`
+}
+type HealthRuleState struct {
+	Result              string `json:"result"`
+	Severity            string `json:"severity"`
+	TriggeredConditions []any  `json:"triggeredConditions"`
+}
+type HealthRuleAggregationScopesStates struct {
+	AggregationScope    HealthRuleAggregationScope `json:"aggregationScope"`
+	JmxAggregationScope any                        `json:"jmxAggregationScope"`
+	State               HealthRuleState            `json:"state"`
+}
+
+// DANGER ZONE END
+
 // HealthRuleService intermediates Health Rules requests
 type HealthRuleService service
 
@@ -201,3 +238,21 @@ func (s *HealthRuleService) DeleteHealthRule(appID int, ruleID int) error {
 
 	return nil
 }
+
+// DANGER ZONE
+// this is an UNPUBLISHED API call - it may change in the future
+// GET /controller/restui/healthRules/getHealthRuleCurrentEvaluationStatus/app/3503/healthRuleID/22196
+func (s *HealthRuleService) GetHealthRuleEvaluationState(appID int, ruleID int) (*HealthRuleEvaluationResponse, error) {
+
+	url := "controller/restui/healthRules/getHealthRuleCurrentEvaluationStatus/app/" + strconv.Itoa(appID) + "/healthRuleID/" + strconv.Itoa(ruleID)
+
+	hr := HealthRuleEvaluationResponse{}
+	err := s.client.Rest("GET", url, &hr, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return &hr, nil
+}
+
+// DANGER ZONE END

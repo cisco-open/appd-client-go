@@ -2,6 +2,7 @@
 MIT License
 
 Copyright (c) 2023 David Lopes
+Copyright (c) 2024 Cisco Systems, Inc. and its affiliates
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -69,6 +70,65 @@ type Application struct {
 	} `json:"applicationTypeInfo"`
 }
 
+// DANGER ZONE
+// following types are used for UNPUBLISHED api call and it may change in the future
+type AllInternalApplications struct {
+	ApmApplications              []GenericApplication `json:"apmApplications"`
+	EumWebApplications           []GenericApplication `json:"eumWebApplications"`
+	DbMonApplication             GenericApplication   `json:"dbMonApplication"`
+	OverageMonitoringApplication GenericApplication   `json:"overageMonitoringApplication"`
+	SimApplication               GenericApplication   `json:"simApplication"`
+	AnalyticsApplication         GenericApplication   `json:"analyticsApplication"`
+	MobileAppContainers          []GenericApplication `json:"mobileAppContainers"`
+	IotApplications              []GenericApplication `json:"iotApplications"`
+	CloudMonitoringApplication   GenericApplication   `json:"cloudMonitoringApplication"`
+	APIMonitoringApplications    []GenericApplication `json:"apiMonitoringApplications"`
+	CoreWebVitalsApplication     GenericApplication   `json:"coreWebVitalsApplication"`
+}
+type GenericApplication struct {
+	ID                    int                     `json:"id"`
+	Version               int                     `json:"version"`
+	Name                  string                  `json:"name"`
+	NameUnique            bool                    `json:"nameUnique"`
+	BuiltIn               bool                    `json:"builtIn"`
+	CreatedBy             string                  `json:"createdBy"`
+	CreatedOn             int64                   `json:"createdOn"`
+	ModifiedBy            string                  `json:"modifiedBy"`
+	ModifiedOn            int64                   `json:"modifiedOn"`
+	Description           string                  `json:"description"`
+	Template              bool                    `json:"template"`
+	Active                bool                    `json:"active"`
+	Running               bool                    `json:"running"`
+	RunningSince          any                     `json:"runningSince"`
+	DeployWorkflowID      int                     `json:"deployWorkflowId"`
+	UndeployWorkflowID    int                     `json:"undeployWorkflowId"`
+	Visualization         any                     `json:"visualization"`
+	EnvironmentProperties []EnvironmentProperties `json:"environmentProperties"`
+	EumAppName            string                  `json:"eumAppName"`
+	AccountGUID           string                  `json:"accountGuid"`
+	ApplicationTypeInfo   ApplicationTypeInfo     `json:"applicationTypeInfo"`
+}
+type ApplicationTypeInfo struct {
+	ApplicationTypes        []string `json:"applicationTypes"`
+	EumEnabled              bool     `json:"eumEnabled"`
+	EumWebEnabled           bool     `json:"eumWebEnabled"`
+	EumMobileEnabled        bool     `json:"eumMobileEnabled"`
+	EumIotEnabled           bool     `json:"eumIotEnabled"`
+	EumAPIMonitoringEnabled bool     `json:"eumApiMonitoringEnabled"`
+	HasEumWebEntities       bool     `json:"hasEumWebEntities"`
+	HasMobileApps           bool     `json:"hasMobileApps"`
+	HasTiers                bool     `json:"hasTiers"`
+	NumberOfMobileApps      int      `json:"numberOfMobileApps"`
+}
+type EnvironmentProperties struct {
+	ID      int    `json:"id"`
+	Version int    `json:"version"`
+	Name    string `json:"name"`
+	Value   string `json:"value"`
+}
+
+// DANGER ZONE END
+
 // ApplicationService intermediates Application requests
 type ApplicationService service
 
@@ -126,3 +186,20 @@ func (s *ApplicationService) ExportApplicationConfig(appID int) ([]byte, error) 
 	}
 	return body, nil
 }
+
+// DANGER ZONE
+// this is an UNPUBLISHED API call - it may change in the future
+func (s *ApplicationService) GetAllInternalApplications() (*AllInternalApplications, error) {
+
+	url := "/controller/restui/applicationManagerUiBean/getApplicationsAllTypes"
+
+	apps := AllInternalApplications{}
+	err := s.client.Rest("GET", url, &apps, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return &apps, nil
+}
+
+// DANGER ZONE END
