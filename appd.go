@@ -178,6 +178,12 @@ func NewClientProxy(protocol string, controllerHost string, port int, username s
 	return c, nil
 }
 
+// SetLoggingBackend Resets the logger backend(s). Can be
+// Added by 2024 Cisco Systems, Inc.
+func (c *Client) SetLoggingBackend(bck []logging.Backend) {
+	logging.SetBackend(bck...)
+}
+
 // Rest makes a call using the standard Rest API
 func (c *Client) Rest(method string, url string, model interface{}, body interface{}) error {
 
