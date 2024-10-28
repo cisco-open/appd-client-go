@@ -332,11 +332,20 @@ func (c *Client) do(req *http.Request, v interface{}, authorization bool) error 
 		return err
 	}
 
-	if v != nil {
-		err = json.NewDecoder(resp.Body).Decode(v)
-		if err != nil {
-			return err
+	if v == nil {
+		c.log.Debugf("Suspect - no model supplied for request %s", req.URL.Path)
+	}
 
+	if v != nil {
+		body, err := io.ReadAll(resp.Body)
+		if err != nil {
+			c.log.Errorf("Error reading request body for request %v", req)
+		}
+		c.log.Debugf("Decoding response from uri %s - %s", req.URL.Path, string(body))
+		err = json.Unmarshal(body, v)
+		if err != nil {
+			c.log.Errorf("Error un-marshalling request body for request %v : %s - %v", req.URL.Path, string(body), err)
+			return err
 		}
 	}
 	return nil
